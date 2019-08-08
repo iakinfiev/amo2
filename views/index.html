@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="../css/glDatePicker-2.0/glDatePicker.default.css" rel="stylesheet" type="text/css">
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+<!--    <script src="../js/jquery.min.js"></script>-->
+	<title>Table</title>
+</head>
+<body>
+    <input type="text" id="mydate" gldp-id="mydate" />
+    <div gldp-el="mydate"
+         style="width:400px; height:300px; position:absolute; top:70px; left:100px;">
+    </div>
+
+    <script>
+        var myScriptDetails = $('script');
+        let n = 5;
+        var dat;
+        $( document ).ready(function(){
+            $.ajax({
+                url: '/models/Reservation.php',
+                method: "POST",
+                dataType: 'json',
+                data: {'num': n},
+                cache: false
+            })
+                .done(function( data ) {
+                    dat = '[';
+                    $.each(data,function(index,value){
+                        if (value != 0){
+                            dat += '{ date: new Date(' + index +') },';
+                        }
+                    });
+                    dat += ']';
+                    console.log(dat);
+                });
+
+            var d = new Date();
+            var myDatePicker = $('input#mydate').glDatePicker(
+                {
+                    showAlways: true,   // спрятать в продукт
+                }).glDatePicker(true);
+            $.extend(myDatePicker.options,
+                {
+                    todayDate: new Date(),
+                    // selectedDate: new Date ( 2019 , 8 , 8 ),
+                    // prevArrow: '',
+                    // nextArrow: '',
+                    allowMonthSelect: false,
+                    allowYearSelect: false,
+                    // selectableDOW : null,
+                    // dowOffset: 0,
+                    // selectableMonths: [d.getMonth(), d.getMonth() + 1],  //  передать активный месяц
+                    // selectableDateRange: [
+                    //     { from: new Date(d.getFullYear(), d.getMonth(), d.getDate()), to: new Date (d.getFullYear(), d.getMonth(), d.getDate() + 29) }
+                    // ],
+                    selectableDates: "dat",
+                });
+
+
+                // $.extend(myDatePicker.options,
+                //     {
+                //         selectableDates: [
+                //             { date: new Date(2013, 8, 24) },
+                //             { date: new Date(2013, 8, 30) }
+                    //     ]
+                    // });
+            console.log(myDatePicker);
+            myDatePicker.render();
+        });
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>-->
+<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>-->
+    <script src='../js/glDatePicker-2.0/glDatePicker.js'></script>
+</body>
+</html>
